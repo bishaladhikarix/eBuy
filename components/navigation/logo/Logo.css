@@ -1,0 +1,14 @@
+
+.logo-styles{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.logo-text-styles{
+    background-color: #2563eb;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 20px;
+}

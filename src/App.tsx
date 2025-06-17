@@ -6,7 +6,17 @@ function App() {
 
   return (
     <>
-      <Navbar/>
+    
+      <header className='header'>
+        <Navbar/>
+      </header>
+      <main>
+        shit 
+      </main>
+      <footer className='footer'>
+        Copyright@2025 All rights reserved
+      </footer>
+      
     </>
   )
 }

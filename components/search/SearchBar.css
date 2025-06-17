@@ -1,15 +1,15 @@
-.searchContainerStyles{
+.search-container{
     flex: 1;
-    max-width: 512px;
+    max-width: 35%;
     margin: 0 16px;
 }
 
-.searchWrapperStyles{
+.search-wrapper{
     position: relative;
     display: flex;
 }
 
-.inputStyles{
+.input-search{
     width: 100%;
     padding: 8px 16px;
     border: 1px solid #d1d5db;
@@ -20,9 +20,9 @@
     font-size: 14px;
 }
 
-.buttonStyles{
-    background-color: #2563eb;
-    color: white;
+.button-search{
+    
+    color: rgb(243, 193, 193);
     padding: 8px 24px;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
@@ -30,11 +30,13 @@
     cursor: pointer;
     display: flex;
     align-items: center;
+    background-color:blue;
     transition: background-color 0.2s;
+    
 }
 
-.buttonHoverStyles{
-    background-color: #1d4ed8;
+.button-search:hover{
+    background-color: red;
     color: white;
     padding: 8px 24px;
     border-top-right-radius: 8px;
