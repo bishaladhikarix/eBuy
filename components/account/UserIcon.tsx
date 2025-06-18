@@ -1,7 +1,7 @@
-import './UserAccount.css';
+import './UserIcon.css';
 import {User} from 'lucide-react';
 
-const UserAccount = ()=>{
+const UserIcon = ()=>{
 
 
 
@@ -10,11 +10,11 @@ const UserAccount = ()=>{
         className='account-button'
       >
         <User size={25} />
-        <span className='element'>Account</span>
+        <span className='element'>Login</span>
       </button>
     )
 
 }
 
 
-export default UserAccount;
+export default UserIcon;

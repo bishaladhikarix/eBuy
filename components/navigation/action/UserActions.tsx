@@ -1,7 +1,7 @@
 import './UserActions.css';
 import {Bell,ShoppingCart,Heart} from 'lucide-react';
 import { useState } from 'react';
-import UserAccount from '../../account/UserAccount';
+import UserIcon from '../../account/UserIcon';
 
 const UserActions = () => {
   const [cartCount, setCartCount] = useState(3);
@@ -34,7 +34,7 @@ const UserActions = () => {
       </button>
       
       {/* User Profile */}
-      <UserAccount/>
+      <UserIcon/>
     </div>
   );
 };
