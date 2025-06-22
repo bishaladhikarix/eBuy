@@ -1,4 +1,5 @@
 import './Navbar.css';
+import { Link } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 import Logo from './logo/Logo';
 import SearchBar from '../search/SearchBar';
@@ -30,12 +31,13 @@ const Navbar = () => {
               <button 
                 className='quick-link'
               >
-                Help & Contact
+                <Link to={'/help'}>Help & Contact</Link>
               </button>
               <button 
                 className='quick-link'
               >
-                Sell
+                <Link to={'/sell'}>Sell</Link>
+                
               </button>
             </div>
             

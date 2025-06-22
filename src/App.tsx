@@ -1,6 +1,6 @@
 import './App.css';
 import Navbar from '../components/navigation/Navbar';
-
+import { Outlet } from 'react-router-dom';
 function App() {
 
 
@@ -10,8 +10,8 @@ function App() {
       <header className='header'>
         <Navbar/>
       </header>
-      <main>
-        shit 
+      <main className='main'>
+        <Outlet/>
       </main>
       <footer className='footer'>
         Copyright@2025 All rights reserved

@@ -1,12 +1,12 @@
 import './Logo.css';
-
+import { Link } from 'react-router-dom';
 
 const Logo = () => {
 
   return (
     <div className='logo-styles'>
       <div className='logo-text-styles'>
-        eBuy
+        <Link to={'/'}>eBuy</Link>
       </div>
     </div>
   );
