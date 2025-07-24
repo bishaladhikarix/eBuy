@@ -251,7 +251,7 @@ const Sell: React.FC<AppProps> = ({ onSubmit }) => {
               onClick={toggleDropdown}
               type="button"
             >
-              {selectedCategory || 'Dropdown to select category'}
+              {selectedCategory || 'Select category'}
               <span className="dropdown-arrow">▼</span>
             </button>
             

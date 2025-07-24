@@ -1,7 +1,23 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.main{
+  flex: 1;
+}
+
 .header {
   background-color: white;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   position: sticky;
   top: 0;
   z-index: 40;
+}
+.foot-container{
+  width: 100%;
+  min-height: 20%;
+  margin-bottom: 2px;
+  text-align: center;
+  border: 2px solid black;
 }

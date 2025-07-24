@@ -5,7 +5,7 @@ function App() {
 
 
   return (
-    <>
+    <div className='wrapper'>
     
       <header className='header'>
         <Navbar/>
@@ -14,10 +14,12 @@ function App() {
         <Outlet/>
       </main>
       <footer className='footer'>
-        Copyright@2025 All rights reserved
+        <div className="foot-container">
+          @COpyRight 2025 All the fucking rights reserved.
+        </div>
       </footer>
       
-    </>
+    </div>
   )
 }
 

@@ -21,12 +21,11 @@
 }
 
 .button-search{
-    /* border: 2px solid black; */
+    border: 2px solid black;
     color: rgb(243, 193, 193);
     padding: 8px 24px;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
-    border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -36,12 +35,10 @@
 }
 
 .button-search:hover{
-    border: 2px solid black;
     color: black;
     padding: 8px 24px;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
-    border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
