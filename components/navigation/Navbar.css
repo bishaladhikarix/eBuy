@@ -1,4 +1,7 @@
-
+.nav{
+  border: solid black 2px;
+  margin-bottom: 2px;
+}
 .container-nav {
   max-width: 100%;
   margin: 0 auto;

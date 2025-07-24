@@ -28,7 +28,7 @@ const SearchBar = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyDown={handleKeyPress}
           placeholder="Search for anything..."
-          onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
+          onFocus={(e) => e.target.style.borderColor = 'black'}
           onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
         />
         <button

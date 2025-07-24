@@ -11,7 +11,8 @@ const CategoriesDropdown = () => {
     'Graphic Card',
     'Moniter',
     'CPU',
-    'Ram'
+    'Ram',
+    'Mother Board'
   ];
 
 

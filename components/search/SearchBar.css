@@ -12,7 +12,7 @@
 .input-search{
     width: 100%;
     padding: 8px 16px;
-    border: 1px solid #d1d5db;
+    border: 2px solid black;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
     border-right: none;
@@ -21,7 +21,7 @@
 }
 
 .button-search{
-    
+    /* border: 2px solid black; */
     color: rgb(243, 193, 193);
     padding: 8px 24px;
     border-top-right-radius: 8px;
@@ -30,14 +30,14 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    background-color:blue;
+    background-color:white;
     transition: background-color 0.2s;
     
 }
 
 .button-search:hover{
-    background-color: red;
-    color: white;
+    border: 2px solid black;
+    color: black;
     padding: 8px 24px;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
