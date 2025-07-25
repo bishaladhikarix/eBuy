@@ -239,7 +239,7 @@ const Sell: React.FC<AppProps> = ({ onSubmit }) => {
             onClick={handleEnhance}
             type="button"
           >
-            Enhance btn
+            Enhance
           </button>
         </div>
 

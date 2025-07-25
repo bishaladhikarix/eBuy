@@ -1,34 +1,21 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import Sell from '../components/sell/Sell.tsx';
-import UserAccountPage from '../components/account/UserAccountPage.tsx';
-import HelpAndContact from '../components/other/HelpAndContact.tsx';
-import Admin from '../components/admin/Admin.tsx';
-import Default from '../components/home/Defualt.tsx'
-import App from './App.tsx';
-import { createBrowserRouter,RouterProvider } from 'react-router-dom';
 
-const router = createBrowserRouter ([
-  {
-    path:'/',
-    element:<App/>,
-    children:[
-      {index:true,element:<Default/>},
-      {path:'sell',element:<Sell/>},
-      {path:'account',element:<UserAccountPage/>},
-      {path:'help',element:<HelpAndContact/>},
-    ],
+import AuthProvider from '../context/authcontext/AuthProvider.tsx';
 
-  },
-  {
-    path:'/admin',
-    element:<Admin/>
-  }
-])
+import Super from './Super.tsx';
+
+
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router}/>
+
+    <AuthProvider>
+
+      <Super/>
+
+    </AuthProvider>    
+
   </StrictMode>,
 )

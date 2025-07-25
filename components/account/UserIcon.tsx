@@ -10,8 +10,8 @@ const UserIcon = ()=>{
       <button 
         className='account-button'
       >
-        <User size={25} />
-        <span className='element'> <Link to={'/account'}>Login</Link> </span>
+        
+        <span className='element'> <Link to={'/account'}><User size={25} /></Link> </span>
       </button>
     )
 
