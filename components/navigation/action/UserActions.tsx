@@ -1,10 +1,11 @@
 import './UserActions.css';
-import {Bell,ShoppingCart,Heart} from 'lucide-react';
+import {MessageCircleMore,ShoppingCart,Heart} from 'lucide-react';
 import { useState } from 'react';
 import UserIcon from '../../account/UserIcon';
 
 const UserActions = () => {
   const [cartCount, setCartCount] = useState(3);
+  const [message,setMessage] = useState(0);
   
   return (
     <div className='action-container'>
@@ -19,8 +20,8 @@ const UserActions = () => {
       <button 
         className='icon-button'
       >
-        <Bell size={25} />
-        <span className='badge'>2</span>
+        <MessageCircleMore size={25} />
+        <span className='badge'>{message}</span>
       </button>
       
       {/* Shopping Cart */}

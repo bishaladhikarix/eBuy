@@ -7,9 +7,12 @@ import HelpAndContact from '../components/other/HelpAndContact.tsx';
 import Admin from '../components/admin/Admin.tsx';
 import Default from '../components/home/Defualt.tsx'
 import App from './App.tsx';
-import AuthProvider from '../context/authcontext/AuthProvider.tsx';
-import NotContextProvider from '../context/ls/NotContextProvider.tsx';
+import UserProfile from '../components/userView/Userprofile.tsx';
+import Message from '../components/message/Message.tsx';
+import ProductDetail from '../components/productPreview/ProductDetail.tsx';
+import Cart from '../components/cart/Cart.tsx';
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
+
 
 const Super = () =>{
     const router = createBrowserRouter ([
@@ -21,6 +24,11 @@ const Super = () =>{
         {path:'sell',element:<Sell/>},
         {path:'account',element:<UserAccountPage/>},
         {path:'help',element:<HelpAndContact/>},
+        {path:'message',element:<Message/>},
+        {path:'userprofile',element:<UserProfile/>},
+        {path:'cart',element:<Cart/>},
+        {path:'viewproduct',element:<ProductDetail/>},
+        
         ],
 
     },
@@ -32,13 +40,10 @@ const Super = () =>{
 
 
     return(
-        <NotContextProvider>
-            <AuthProvider>
 
-                <RouterProvider router={router}/>
 
-            </AuthProvider> 
-        </NotContextProvider>  
+        <RouterProvider router={router}/>
+
     )
 } 
 export default Super;
