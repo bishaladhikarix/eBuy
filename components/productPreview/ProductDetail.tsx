@@ -13,7 +13,7 @@ const ProductDetail = () => {
   // Default product data if none provided
   const defaultProduct = useMemo(() => ({
     name: "John Doe",
-    profileImage: "https://via.placeholder.com/50x50/cccccc/666666?text=User",
+    profileImage: "https://cdn.pixabay.com/photo/2025/06/19/07/59/allgau-9668453_960_720.jpg",
     photos: [
       "https://thumbs.dreamstime.com/b/innovative-medical-device-featuring-eye-image-illustrating-advanced-tracking-technology-generated-ai-358374352.jpg",
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvF9qGJi4C7tQPhzSIoqFcu5HUzRgUSHr7Mxat8CAMmL9-96PhJj-KZ96i0XdH-b6Yh2k&usqp=CAU",
@@ -24,10 +24,10 @@ const ProductDetail = () => {
     description: "This is a detailed description of the product. It provides comprehensive information about the features, benefits, and specifications that customers need to know before making a purchase decision.",
     price: "$299.99",
     deviceSpecs: [
-      "Specification 1: Value",
-      "Specification 2: Value", 
-      "Specification 3: Value",
-      "Specification 4: Value"
+      "Brand 1: dell",
+      "something 2: someotherthing", 
+      "ehlo 3: echo",
+      "dfsd 4: Value"
     ]
   }), []);
 

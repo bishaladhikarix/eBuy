@@ -1,4 +1,4 @@
-.action-container {
+/* .action-container {
   width: 30%;
   display: flex;
   align-items: center;
@@ -58,6 +58,250 @@
   display: none;
 }
 
+
+@media (min-width: 768px) {
+  .element {
+    display: inline;
+  }
+} */
+
+
+  .remove-favorite-btn {
+    width: 20px;
+    height: 20px;
+    top: 6px;
+    right: 6px;
+  }
+  
+  .remove-favorite-btn svg {
+    width: 12px;
+    height: 12px;
+  }.action-container {
+  width: 30%;
+  display: flex;
+  align-items: center;
+  gap: 10%;
+  position: relative;
+}
+
+.icon-button {
+  position: relative;
+  padding: 2%;
+  color: #374151;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.icon-button:hover {
+  color: #2563eb;
+}
+
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #ef4444;
+  color: white;
+  font-size: 12px;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  color: white;
+  font-size: 12px;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #2563eb;
+}
+
+/* Favorites Popup Styles */
+.favorites-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 999;
+}
+
+.favorites-popup {
+  position: fixed;
+  top: 70px;
+  right: 25vw;
+  width: 50vw;
+  height: 30vh;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  border: 2px solid black;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.favorites-header {
+  border: 1px solid black;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+}
+
+.favorites-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.favorites-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+
+.favorite-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 1px solid #f3f4f6;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  position: relative;
+}
+
+.favorite-item:hover {
+  background-color: #f9fafb;
+}
+
+.favorite-item:last-child {
+  border-bottom: none;
+}
+
+.favorite-image {
+  width: 60px;
+  height: 45px;
+  margin-right: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid black;
+}
+
+.favorite-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.favorite-details {
+  flex: 1;
+}
+
+.favorite-title {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  line-height: 1.3;
+}
+
+.favorite-price {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2563eb;
+}
+
+.remove-favorite-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(239, 68, 68, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #ef4444;
+  transition: all 0.2s;
+  opacity: 0;
+}
+
+.favorite-item:hover .remove-favorite-btn {
+  opacity: 1;
+}
+
+.remove-favorite-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  transform: scale(1.1);
+}
+
+.empty-favorites {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #9ca3af;
+}
+
+.empty-favorites p {
+  margin: 8px 0 0 0;
+  font-size: 16px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .favorites-popup {
+    right: 10px;
+    left: 10px;
+    width: auto;
+    height: 35vh;
+  }
+  
+  .favorite-item {
+    padding: 10px 16px;
+  }
+  
+  .favorite-image {
+    width: 50px;
+    height: 40px;
+  }
+  
+  .favorite-title {
+    font-size: 13px;
+  }
+  
+  .favorite-price {
+    font-size: 13px;
+  }
+}
+
+.element {
+  display: none;
+}
 
 @media (min-width: 768px) {
   .element {

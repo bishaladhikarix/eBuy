@@ -83,6 +83,48 @@ const Userprofile = () => {
       category: "Clothing",
       price: "$29.99",
       image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=200&fit=crop"
+    },
+        {
+      id: 2,
+      title: "Wireless Bluetooth Headphones",
+      category: "Electronics",
+      price: "$149.99",
+      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=200&fit=crop"
+    },
+    {
+      id: 3,
+      title: "Ceramic Coffee Mug Set",
+      category: "Home & Garden",
+      price: "$24.99",
+      image: "https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?w=300&h=200&fit=crop"
+    },
+    {
+      id: 4,
+      title: "Organic Cotton T-Shirt",
+      category: "Clothing",
+      price: "$29.99",
+      image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=200&fit=crop"
+    },
+        {
+      id: 2,
+      title: "Wireless Bluetooth Headphones",
+      category: "Electronics",
+      price: "$149.99",
+      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=200&fit=crop"
+    },
+    {
+      id: 3,
+      title: "Ceramic Coffee Mug Set",
+      category: "Home & Garden",
+      price: "$24.99",
+      image: "https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?w=300&h=200&fit=crop"
+    },
+    {
+      id: 4,
+      title: "Organic Cotton T-Shirt",
+      category: "Clothing",
+      price: "$29.99",
+      image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=200&fit=crop"
     }
   ];
 

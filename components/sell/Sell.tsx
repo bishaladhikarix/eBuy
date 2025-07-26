@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
+import GemApi from '../coolShit/GemApi.ts';
 import type { ChangeEvent } from 'react';
 import './Sell.css';
 
@@ -96,11 +97,12 @@ const Sell: React.FC<AppProps> = ({ onSubmit }) => {
     setIsDropdownOpen(prev => !prev);
   }, []);
 
-  const handleEnhance = useCallback(() => {
+  const handleEnhance = async() => {
     // AI enhancement functionality placeholder
     console.log('Enhancing description...');
-    alert('AI enhancement feature coming soon!');
-  }, []);
+    const enhancedVal = await GemApi(description);
+    setDescription(enhancedVal);
+  }
 
   const handleSubmit = useCallback(() => {
     const productData: ProductData = {

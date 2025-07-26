@@ -8,7 +8,7 @@ import Admin from '../components/admin/Admin.tsx';
 import Default from '../components/home/Defualt.tsx'
 import App from './App.tsx';
 import UserProfile from '../components/userView/Userprofile.tsx';
-import Message from '../components/message/Message.tsx';
+import ChatUI from '../components/message/ChatUI.tsx';
 import ProductDetail from '../components/productPreview/ProductDetail.tsx';
 import Cart from '../components/cart/Cart.tsx';
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
@@ -24,7 +24,7 @@ const Super = () =>{
         {path:'sell',element:<Sell/>},
         {path:'account',element:<UserAccountPage/>},
         {path:'help',element:<HelpAndContact/>},
-        {path:'message',element:<Message/>},
+        {path:'message',element:<ChatUI/>},
         {path:'userprofile',element:<UserProfile/>},
         {path:'cart',element:<Cart/>},
         {path:'viewproduct',element:<ProductDetail/>},
