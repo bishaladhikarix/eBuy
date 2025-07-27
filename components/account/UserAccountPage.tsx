@@ -1,15 +1,16 @@
 import './UserAccountPage.css';
 import Lamo from '../auth/Lamo.tsx';
+import Profile from './Profile.tsx';
 import useAuth from '../hooks/useAuth.ts';
 
 const UserAccountPage = () => {
 
     const {Loggedin} = useAuth();
 
-    if(Loggedin){
+    if(!Loggedin){
         
         return(
-            <div>This is user profile page</div>
+            <Profile/>
         )
     }
     return(
