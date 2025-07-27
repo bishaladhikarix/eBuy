@@ -301,8 +301,8 @@ const Profile: React.FC = () => {
                 placeholder="Email"
               />
               <div className="profile-edit-buttons">
-                <button onClick={handleProfileSave} className="save-btn">Save</button>
-                <button onClick={() => setIsEditingProfile(false)} className="cancel-btn">Cancel</button>
+                <button onClick={handleProfileSave} className="btn btn-primary save-btn">Save</button>
+                <button onClick={() => setIsEditingProfile(false)} className="btn btn-secondary cancel-btn">Cancel</button>
               </div>
             </div>
           ) : (
@@ -317,8 +317,8 @@ const Profile: React.FC = () => {
                 <strong>Email:</strong> {user?.email}
               </div>
               <div className="edit-hint">(User should be able to edit these if they want)</div>
-              <button onClick={handleProfileEdit} className="edit-profile-btn">Edit Profile</button>
-              <button onClick={logout} className="logout-btn">Logout</button>
+              <button onClick={handleProfileEdit} className="btn btn-secondary edit-profile-btn">Edit Profile</button>
+              <button onClick={logout} className="btn btn-danger logout-btn">Logout</button>
             </div>
           )}
         </div>
@@ -332,7 +332,7 @@ const Profile: React.FC = () => {
             products.map((product) => (
               <div 
                 key={product.id} 
-                className="product-card"
+                className="product-cards"
                 onClick={() => navigate(`/edit-product/${product.id}`)}
                 style={{ cursor: 'pointer' }}
               >

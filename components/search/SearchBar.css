@@ -1,46 +1,76 @@
-.search-container{
+/* Enhanced Search Styling */
+.search-container {
     flex: 1;
     max-width: 35%;
     margin: 0 16px;
 }
 
-.search-wrapper{
+.search-wrapper {
     position: relative;
     display: flex;
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--border-radius-sm);
+    overflow: hidden;
 }
 
-.input-search{
+.input-search {
     width: 100%;
-    padding: 8px 16px;
-    border: 2px solid black;
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
+    padding: 12px 16px;
+    border: 2px solid var(--primary-black);
+    border-top-left-radius: var(--border-radius-sm);
+    border-bottom-left-radius: var(--border-radius-sm);
     border-right: none;
     outline: none;
     font-size: 14px;
+    background: var(--primary-white);
+    transition: all var(--transition-normal);
 }
 
-.button-search{
-    border: 2px solid black;
-    color: rgb(243, 193, 193);
-    padding: 8px 24px;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
+.input-search:focus {
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+/* Enhanced Search Button */
+.button-search {
+    border: 2px solid var(--primary-black);
+    border-left: none;
+    color: var(--primary-black);
+    padding: 12px 20px;
+    border-top-right-radius: var(--border-radius-sm);
+    border-bottom-right-radius: var(--border-radius-sm);
     cursor: pointer;
     display: flex;
     align-items: center;
-    background-color:white;
-    transition: background-color 0.2s;
-    
+    justify-content: center;
+    background: var(--primary-white);
+    transition: all var(--transition-normal);
+    min-width: 50px;
+    position: relative;
+    overflow: hidden;
 }
 
-.button-search:hover{
-    color: black;
-    padding: 8px 24px;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    transition: background-color 0.2s;
+.button-search::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left var(--transition-normal);
+}
+
+.button-search:hover::before {
+    left: 100%;
+}
+
+.button-search:hover {
+    background: var(--hover-gray);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.button-search:active {
+    transform: translateY(0);
 }

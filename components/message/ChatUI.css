@@ -1,41 +1,62 @@
+/* Enhanced Chat Container */
 .chat-container {
   display: flex;
   flex-direction: column;
   height: 80vh;
   max-width: 90vw;
   margin: 0 auto;
-  background-color: #f8f9fa;
-  border: 3px solid #000000;
-  border-radius: 25px;
+  background: var(--primary-white);
+  border: 2px solid var(--primary-black);
+  border-radius: var(--border-radius-xl);
   overflow: hidden;
+  box-shadow: var(--shadow-md);
 }
 
+/* Enhanced Chat Header */
 .chat-header {
   display: flex;
   align-items: center;
   padding: 20px;
-  background-color: #ffffff;
-  border-bottom: 2px solid #000000;
+  background: var(--primary-white);
+  border-bottom: 2px solid var(--primary-black);
   gap: 15px;
+  position: relative;
+}
+
+.chat-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-black), var(--dark-gray), var(--primary-black));
 }
 
 .user-name-display {
   flex: 1;
   padding: 15px 20px;
-  border: 2px solid #000000;
-  border-radius: 20px;
+  border: 2px solid var(--primary-black);
+  border-radius: var(--border-radius-lg);
   font-size: 16px;
   font-family: inherit;
-  background-color: #ffffff;
-  color: #000000;
+  background: var(--primary-white);
+  color: var(--primary-black);
   display: flex;
   align-items: center;
   min-height: 24px;
+  transition: all var(--transition-normal);
 }
 
+.user-name-display:hover {
+  background: var(--hover-gray);
+  transform: translateY(-1px);
+}
+
+/* Enhanced Message Icon Button */
 .message-icon-btn {
-  background-color: #ffffff;
-  border: 2px solid #000000;
+  background: var(--primary-white);
+  border: 2px solid var(--primary-black);
   border-radius: 50%;
   width: 50px;
   height: 50px;
@@ -43,12 +64,30 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.message-icon-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left var(--transition-normal);
+}
+
+.message-icon-btn:hover::before {
+  left: 100%;
 }
 
 .message-icon-btn:hover {
-  background-color: #f0f0f0;
+  background: var(--hover-gray);
   transform: scale(1.05);
+  box-shadow: var(--shadow-sm);
 }
 
 .chat-content {

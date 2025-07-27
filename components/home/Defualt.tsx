@@ -179,13 +179,7 @@ const Default: React.FC<ProductGridProps> = ({ onProductClick }) => {
 
             <div className="product-hover-overlay" aria-hidden="true">
               <div className="hover-content">
-                <h3 className="hover-title">{product.title}</h3>
-                <p className="hover-category">{product.category}</p>
-                <p className="hover-price">{formatPrice(product.price)}</p>
-                <div className="hover-description">
-                  <span className="description-label">Description:</span>
-                  <p className="description-text">{product.description}</p>
-                </div>
+                <p className="description-text">{product.description || 'No description available'}</p>
               </div>
             </div>
           </div>

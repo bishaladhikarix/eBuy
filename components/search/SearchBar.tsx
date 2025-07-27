@@ -66,7 +66,7 @@ const SearchBar = () => {
           onClick={handleSearch}
           className='button-search'
         >
-          <Search size={25} />
+          <Search size={20} />
         </button>
       </div>
     </div>

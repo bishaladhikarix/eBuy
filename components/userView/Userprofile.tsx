@@ -291,11 +291,18 @@ const Userprofile = () => {
                 <p><strong>Products listed:</strong> {userData.product_count}</p>
               </div>
               <button 
-                className="chat-button" 
+                className="btn btn-primary chat-button" 
                 onClick={handleChatClick}
                 disabled={chatLoading || !Loggedin}
               >
-                {chatLoading ? 'Starting Chat...' : 'Chat'}
+                {chatLoading ? (
+                  <>
+                    <span className="loading-spinner"></span>
+                    Starting Chat...
+                  </>
+                ) : (
+                  'Chat'
+                )}
               </button>
             </div>
           </div>

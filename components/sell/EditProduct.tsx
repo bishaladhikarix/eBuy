@@ -42,7 +42,6 @@ const EditProduct: React.FC = () => {
   const [isConditionDropdownOpen, setIsConditionDropdownOpen] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [message, setMessage] = useState<{ type: string; text: string }>({ type: '', text: '' });
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const maxPhotos: number = 6;
@@ -127,7 +126,7 @@ const EditProduct: React.FC = () => {
 
     } catch (error) {
       console.error('Error fetching product:', error);
-      setMessage({ type: 'error', text: 'Failed to load product data' });
+      alert('Failed to load product data');
     } finally {
       setIsLoading(false);
     }
@@ -194,24 +193,23 @@ const EditProduct: React.FC = () => {
   const handleSubmit = useCallback(async () => {
     // Validation
     if (!title.trim()) {
-      setMessage({ type: 'error', text: 'Please enter a product title' });
+      alert('Please enter a product title');
       return;
     }
     if (!description.trim()) {
-      setMessage({ type: 'error', text: 'Please enter a product description' });
+      alert('Please enter a product description');
       return;
     }
     if (!price.trim() || isNaN(parseFloat(price))) {
-      setMessage({ type: 'error', text: 'Please enter a valid price' });
+      alert('Please enter a valid price');
       return;
     }
     if (!selectedCategory) {
-      setMessage({ type: 'error', text: 'Please select a category' });
+      alert('Please select a category');
       return;
     }
 
     setIsSubmitting(true);
-    setMessage({ type: '', text: '' });
 
     try {
       // Create FormData for file upload
@@ -265,23 +263,17 @@ const EditProduct: React.FC = () => {
       console.log('Update response:', result);
 
       if (response.ok && result.success) {
-        setMessage({ type: 'success', text: 'Product updated successfully!' });
+        alert('Product updated successfully!');
         setTimeout(() => {
           navigate('/account');
         }, 2000);
       } else {
-        setMessage({ 
-          type: 'error', 
-          text: result.message || 'Failed to update product. Please try again.' 
-        });
+        alert(result.message || 'Failed to update product. Please try again.');
       }
 
     } catch (error) {
       console.error('Error updating product:', error);
-      setMessage({ 
-        type: 'error', 
-        text: 'An error occurred while updating the product. Please try again.' 
-      });
+      alert('An error occurred while updating the product. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -304,22 +296,6 @@ const EditProduct: React.FC = () => {
 
   return (
     <div className="add-product-container">
-      {message.text && (
-        <div className={`message ${message.type}`} style={{
-          position: 'fixed',
-          top: '20px',
-          right: '20px',
-          padding: '15px 20px',
-          borderRadius: '8px',
-          zIndex: 1000,
-          backgroundColor: message.type === 'success' ? '#4CAF50' : '#f44336',
-          color: 'white',
-          fontWeight: 'bold'
-        }}>
-          {message.text}
-        </div>
-      )}
-
       {/* Left Column */}
       <div className="left-column">
         {/* Photo Upload Section */}

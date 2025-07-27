@@ -50,7 +50,7 @@ const Login: React.FC = () => {
             placeholder="Email"
             value={formData.email}
             onChange={handleInputChange}
-            className="form-input"
+            className="form-control form-input"
             required
             disabled={loading}
           />
@@ -63,7 +63,7 @@ const Login: React.FC = () => {
             placeholder="Password"
             value={formData.password}
             onChange={handleInputChange}
-            className="form-input"
+            className="form-control form-input"
             required
             disabled={loading}
           />
@@ -80,8 +80,15 @@ const Login: React.FC = () => {
           </div>
         )}
 
-        <button type="submit" className="login-button" disabled={loading}>
-          {loading ? 'Logging in...' : 'Login'}
+        <button type="submit" className="btn btn-primary login-button" disabled={loading}>
+          {loading ? (
+            <>
+              <span className="loading-spinner"></span>
+              Logging in...
+            </>
+          ) : (
+            'Login'
+          )}
         </button>
 
         <p className="signup-link" onClick={handleSignUpClick}>

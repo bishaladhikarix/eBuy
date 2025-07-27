@@ -1,16 +1,18 @@
+/* Enhanced Login Container */
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 80vh;
-  background-color: #f8f9fa;
+  background: var(--light-gray);
   padding: 20px;
 }
 
+/* Enhanced Login Form */
 .login-form {
-  background-color: #ffffff;
-  border: 3px solid #000000;
-  border-radius: 25px;
+  background: var(--primary-white);
+  border: 2px solid var(--primary-black);
+  border-radius: var(--border-radius-xl);
   padding: 40px 30px;
   width: 50%;
   height: 50%;
@@ -18,71 +20,117 @@
   flex-direction: column;
   gap: 20px;
   position: relative;
+  box-shadow: var(--shadow-md);
+  animation: slideIn 0.5s ease;
+}
+
+.login-form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-black), var(--dark-gray), var(--primary-black));
+  border-radius: var(--border-radius-xl) var(--border-radius-xl) 0 0;
 }
 
 .input-group {
   width: 100%;
+  position: relative;
 }
 
+/* Enhanced Form Input */
 .form-input {
   width: 100%;
   padding: 15px 20px;
-  border: 2px solid #000000;
-  border-radius: 20px;
+  border: 2px solid var(--primary-black);
+  border-radius: var(--border-radius-lg);
   font-size: 16px;
   font-family: inherit;
-  background-color: #ffffff;
+  background: var(--primary-white);
   outline: none;
-  transition: border-color 0.3s ease;
+  transition: all var(--transition-normal);
   box-sizing: border-box;
 }
 
 .form-input:focus {
   border-color: #333333;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
 }
 
 .form-input::placeholder {
-  color: #000000;
+  color: var(--dark-gray);
   font-weight: 400;
+  transition: color var(--transition-normal);
 }
 
+.form-input:focus::placeholder {
+  color: var(--text-gray);
+}
+
+/* Enhanced Login Button */
 .login-button {
-  background-color: #ffffff;
-  border: 2px solid #000000;
-  border-radius: 15px;
+  background: var(--primary-white);
+  border: 2px solid var(--primary-black);
+  border-radius: var(--border-radius-md);
   padding: 12px 30px;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
   align-self: center;
   margin-top: 10px;
-  transition: all 0.3s ease;
+  transition: all var(--transition-normal);
   min-width: 120px;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left var(--transition-normal);
+}
+
+.login-button:hover::before {
+  left: 100%;
 }
 
 .login-button:hover {
-  background-color: #f0f0f0;
+  background: var(--hover-gray);
   transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
 .login-button:active {
   transform: translateY(0);
 }
 
+/* Enhanced Signup Link */
 .signup-link {
-  color: #000000;
+  color: var(--primary-black);
   font-size: 14px;
   text-align: right;
   margin-top: 20px;
   margin-bottom: 0;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: all var(--transition-normal);
   font-weight: 400;
+  padding: 8px;
+  border-radius: var(--border-radius-sm);
 }
 
 .signup-link:hover {
   color: #333333;
   text-decoration: underline;
+  background: var(--hover-gray);
+  transform: translateY(-1px);
 }
 
 /* Responsive design */

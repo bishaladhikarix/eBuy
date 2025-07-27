@@ -158,8 +158,15 @@ const Signup: React.FC = () => {
           </div>
         )}
 
-        <button type="submit" className="signup-button" disabled={loading}>
-          {loading ? 'Creating Account...' : 'SignUP'}
+        <button type="submit" className="btn btn-primary signup-button" disabled={loading}>
+          {loading ? (
+            <>
+              <span className="loading-spinner"></span>
+              Creating Account...
+            </>
+          ) : (
+            'Sign Up'
+          )}
         </button>
         <p className="signup-link" onClick={handleLoginClick}>
           Have an account?

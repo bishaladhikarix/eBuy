@@ -158,7 +158,7 @@ const ChatUI: React.FC = () => {
             <div className="chat-messages-header">
               <h3>{selectedRoom.other_user_name || 'Chat User'}</h3>
               <button 
-                className="close-chat-btn"
+                className="btn btn-sm close-chat-btn"
                 onClick={() => setSelectedRoom(null)}
               >
                 <X size={20} />
@@ -191,18 +191,18 @@ const ChatUI: React.FC = () => {
         )}
       </div>
 
-      <div className="chat-input-section">
+            <div className="chat-input-section">
         <input
           type="text"
-          placeholder="Chat"
-          className="chat-input"
+          placeholder="Type your message..."
+          className="form-control chat-input"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyPress={handleKeyPress}
           disabled={!selectedRoom}
         />
         <button 
-          className="send-button"
+          className="btn btn-primary send-button"
           onClick={handleSendMessage}
           disabled={!selectedRoom || !newMessage.trim()}
         >
@@ -217,7 +217,7 @@ const ChatUI: React.FC = () => {
             <div className="user-list-header">
               <h3>Messages</h3>
               <button 
-                className="close-modal-btn"
+                className="btn btn-sm close-modal-btn"
                 onClick={() => setShowUserList(false)}
               >
                 <X size={20} />

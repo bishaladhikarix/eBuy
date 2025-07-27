@@ -23,7 +23,6 @@ const Sell: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isConditionDropdownOpen, setIsConditionDropdownOpen] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [message, setMessage] = useState<{ type: string; text: string }>({ type: '', text: '' });
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const maxPhotos: number = 6;
@@ -116,28 +115,27 @@ const Sell: React.FC = () => {
   const handleSubmit = useCallback(async () => {
     // Validation
     if (!title.trim()) {
-      setMessage({ type: 'error', text: 'Please enter a product title' });
+      alert('Please enter a product title');
       return;
     }
     if (!description.trim()) {
-      setMessage({ type: 'error', text: 'Please enter a product description' });
+      alert('Please enter a product description');
       return;
     }
     if (!price.trim() || isNaN(parseFloat(price))) {
-      setMessage({ type: 'error', text: 'Please enter a valid price' });
+      alert('Please enter a valid price');
       return;
     }
     if (!selectedCategory) {
-      setMessage({ type: 'error', text: 'Please select a category' });
+      alert('Please select a category');
       return;
     }
     if (photos.length === 0) {
-      setMessage({ type: 'error', text: 'Please add at least one product image' });
+      alert('Please add at least one product image');
       return;
     }
 
     setIsSubmitting(true);
-    setMessage({ type: '', text: '' });
 
     try {
       // Create FormData for file upload
@@ -186,18 +184,14 @@ const Sell: React.FC = () => {
       setModel('');
       setSelectedCategory('');
 
-      setMessage({ 
-        type: 'success', 
-        text: 'Product created successfully!'
-      });
+      // Show success alert
+      alert('Product created successfully!');
 
     } catch (error: any) {
       console.error('=== PRODUCT CREATION ERROR ===');
       console.error('Error details:', error);
-      setMessage({ 
-        type: 'error', 
-        text: error.message || 'Failed to create product'
-      });
+      // Show error alert
+      alert(error.message || 'Failed to create product');
     } finally {
       setIsSubmitting(false);
     }
@@ -207,13 +201,6 @@ const Sell: React.FC = () => {
 
   return (
     <div className="add-product-container">
-      {/* Message Display */}
-      {message.text && (
-        <div className={`message ${message.type}`}>
-          {message.text}
-        </div>
-      )}
-
       {/* Left Column */}
       <div className="left-column">
         {/* Photo Upload Section */}
