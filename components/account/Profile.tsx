@@ -316,7 +316,7 @@ const Profile: React.FC = () => {
               <div className="profile-field">
                 <strong>Email:</strong> {user?.email}
               </div>
-              <div className="edit-hint">(User should be able to edit these if they want)</div>
+              <div className="edit-hint">(edit here)</div>
               <button onClick={handleProfileEdit} className="btn btn-secondary edit-profile-btn">Edit Profile</button>
               <button onClick={logout} className="btn btn-danger logout-btn">Logout</button>
             </div>

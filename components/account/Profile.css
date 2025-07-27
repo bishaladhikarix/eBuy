@@ -235,7 +235,8 @@
   display: flex;
   gap: 20px; /* Increased from 15px */
   transition: none !important; /* Force no transition */
-  min-height: 160px; /* Increased from 140px */
+
+
   transform: none !important; /* Force no transform */
   align-items: stretch; /* Ensure proper alignment */
 }
@@ -400,7 +401,7 @@
   
   .product-cards {
     padding: 20px; /* Increased from 15px */
-    min-height: 140px; /* Increased from 120px */
+    max-height: 100px; /* Increased from 120px */
     gap: 16px; /* Added gap */
   }
   
