@@ -396,3 +396,39 @@
     padding: 15px;
   }
 }
+
+/* Additional styles for new elements */
+.loading-messages, .loading-rooms {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  font-style: italic;
+}
+
+.no-conversations {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+}
+
+.no-conversations p {
+  margin: 5px 0;
+}
+
+.no-conversations p:first-child {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.chat-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}

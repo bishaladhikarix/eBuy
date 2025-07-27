@@ -1,6 +1,8 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useChat } from '../../context/chatcontext/ChatProvider';
+import useAuth from '../hooks/useAuth';
 import './Userprofile.css';
 
 interface UserProfileData {
@@ -27,10 +29,13 @@ interface UserProduct {
 const Userprofile = () => {
   const { userId } = useParams<{ userId: string }>();
   const navigate = useNavigate();
+  const { createOrGetRoom } = useChat();
+  const { Loggedin, user } = useAuth();
   const [userData, setUserData] = useState<UserProfileData | null>(null);
   const [userProducts, setUserProducts] = useState<UserProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [chatLoading, setChatLoading] = useState(false);
 
   // Fetch user data and products when component mounts or userId changes
   useEffect(() => {
@@ -199,8 +204,52 @@ const Userprofile = () => {
   ];
   */
 
-  const handleChatClick = () => {
-    alert('Chat functionality would be implemented here');
+  const handleChatClick = async () => {
+    // Check if user is logged in
+    if (!Loggedin || !user) {
+      alert('Please log in to start a chat');
+      navigate('/'); // Redirect to login
+      return;
+    }
+
+    // Check if trying to chat with themselves
+    if (userData && user.id === userData.id) {
+      alert('You cannot start a chat with yourself');
+      return;
+    }
+
+    if (!userData) {
+      alert('User data not available');
+      return;
+    }
+
+    try {
+      setChatLoading(true);
+      
+      // Create or get existing chat room with this user
+      const room = await createOrGetRoom(userData.id);
+      
+      if (room) {
+        // Navigate to the message page with the room selected
+        navigate('/message', { 
+          state: { 
+            selectedRoomId: room.id,
+            otherUser: {
+              id: userData.id,
+              name: `${userData.first_name} ${userData.last_name}`,
+              profileImage: userData.profile_image
+            }
+          } 
+        });
+      } else {
+        alert('Failed to create chat room. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error starting chat:', error);
+      alert('Failed to start chat. Please try again.');
+    } finally {
+      setChatLoading(false);
+    }
   };
 
   const handleProductClick = (product: UserProduct) => {
@@ -241,8 +290,12 @@ const Userprofile = () => {
                 {userData.address && <p><strong>Address:</strong> {userData.address}</p>}
                 <p><strong>Products listed:</strong> {userData.product_count}</p>
               </div>
-              <button className="chat-button" onClick={handleChatClick}>
-                Chat
+              <button 
+                className="chat-button" 
+                onClick={handleChatClick}
+                disabled={chatLoading || !Loggedin}
+              >
+                {chatLoading ? 'Starting Chat...' : 'Chat'}
               </button>
             </div>
           </div>

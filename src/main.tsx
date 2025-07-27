@@ -7,6 +7,7 @@ import NoaccountProvider from '../context/loginorsignup/NoaccountProvider.tsx';
 import { FavoritesProvider } from '../context/favorites/FavoritesProvider.tsx';
 import { CartProvider } from '../context/cart/CartProvider.tsx';
 import { SearchProvider } from '../context/searchcontext/SearchProvider.tsx';
+import ChatProvider from '../context/chatcontext/ChatProvider.tsx';
 import Super from './Super.tsx';
 
 createRoot(document.getElementById('root')!).render(
@@ -16,7 +17,9 @@ createRoot(document.getElementById('root')!).render(
         <SearchProvider>
           <FavoritesProvider>
             <CartProvider>
-              <Super/>
+              <ChatProvider>
+                <Super/>
+              </ChatProvider>
             </CartProvider>
           </FavoritesProvider>
         </SearchProvider>
