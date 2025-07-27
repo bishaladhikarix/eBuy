@@ -37,14 +37,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: transform 0.3s ease;
   position: relative;
-}
-
-.profile-picture:hover {
-  transform: scale(1.05);
-  opacity: 0.8;
 }
 
 .profile-picture img {
@@ -369,6 +362,61 @@
   }
 }
 
+/* No Products Section */
+.no-products {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #f8f9fa;
+  border-radius: 15px;
+  border: 2px dashed #dee2e6;
+  min-height: 200px;
+  grid-column: 1 / -1; /* Span across all columns */
+}
+
+.no-products p {
+  font-size: 18px;
+  color: #6c757d;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.add-product-btn {
+  background-color: #000000;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-product-btn:hover {
+  background-color: #333333;
+  transform: translateY(-2px);
+}
+
+/* Product Card Hover Effects */
+.product-card {
+  transition: all 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border-color: #000000;
+}
+
+.product-card:hover .product-title {
+  color: #000000;
+  font-weight: 600;
+}
+
 @media (max-width: 480px) {
   .profile-products-container {
     padding: 15px;
@@ -401,5 +449,19 @@
   
   .products-grid {
     max-height: 350px;
+  }
+
+  .no-products {
+    padding: 30px 15px;
+    min-height: 150px;
+  }
+
+  .no-products p {
+    font-size: 16px;
+  }
+
+  .add-product-btn {
+    padding: 10px 20px;
+    font-size: 14px;
   }
 }

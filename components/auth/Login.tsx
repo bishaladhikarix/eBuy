@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Login.css';
 import useSignup from '../hooks/useSignup.ts';
+import useAuth from '../hooks/useAuth.ts';
 
 interface LoginFormData {
   email: string;
@@ -8,7 +9,8 @@ interface LoginFormData {
 }
 
 const Login: React.FC = () => {
-  const {Signups,setSignup} = useSignup();
+  const { setSignup } = useSignup();
+  const { login, loading, error } = useAuth();
   const [formData, setFormData] = useState<LoginFormData>({
     email: '',
     password: ''
@@ -22,16 +24,20 @@ const Login: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Login form submitted:', formData);
+    
+    const success = await login(formData.email, formData.password);
+    
+    if (success) {
+      console.log('Login successful!');
+      // The AuthProvider will handle state updates automatically
+    }
+    // Error handling is managed by AuthProvider and displayed below
   };
 
   const handleSignUpClick = () => {
-    
     setSignup(true);
-    console.log(Signups)
-    console.log('Navigate to sign up page');
   };
 
   return (
@@ -46,6 +52,7 @@ const Login: React.FC = () => {
             onChange={handleInputChange}
             className="form-input"
             required
+            disabled={loading}
           />
         </div>
 
@@ -58,11 +65,23 @@ const Login: React.FC = () => {
             onChange={handleInputChange}
             className="form-input"
             required
+            disabled={loading}
           />
         </div>
 
-        <button type="submit" className="login-button">
-          Login
+        {error && (
+          <div className="error-message" style={{
+            color: 'red',
+            fontSize: '14px',
+            textAlign: 'center',
+            marginBottom: '10px'
+          }}>
+            {error}
+          </div>
+        )}
+
+        <button type="submit" className="login-button" disabled={loading}>
+          {loading ? 'Logging in...' : 'Login'}
         </button>
 
         <p className="signup-link" onClick={handleSignUpClick}>

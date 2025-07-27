@@ -1,97 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Profile.css';
+import useAuth from '../hooks/useAuth';
+import ProfileImageUpload from './ProfileImageUpload';
 
 interface Product {
   id: string;
   title: string;
-  category: string;
-  price: number;
-  image: string;
-}
-
-interface UserProfile {
-  name: string;
-  phone: string;
-  email: string;
-  profilePicture: string;
+  category_name: string;
+  price: number | string;
+  images: string[];
 }
 
 const Profile: React.FC = () => {
-  const [profile, setProfile] = useState<UserProfile>({
-    name: 'John Smith',
-    phone: '+1 (555) 123-4567',
-    email: 'john.smith@email.com',
-    profilePicture: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=200'
-  });
+  const { user, logout, updateName, Token } = useAuth();
+  const navigate = useNavigate();
 
-  const [products, setProducts] = useState<Product[]>([
-    {
-      id: '1',
-      title: 'Gaming Laptop',
-      category: 'Electronics',
-      price: 1299.99,
-      image: 'https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=300'
-    },
-    {
-      id: '2',
-      title: 'Wireless Mouse',
-      category: 'Accessories',
-      price: 79.99,
-      image: 'https://images.pexels.com/photos/2115256/pexels-photo-2115256.jpeg?auto=compress&cs=tinysrgb&w=300'
-    },
-    {
-      id: '3',
-      title: '4K Monitor',
-      category: 'Electronics',
-      price: 399.99,
-      image: 'https://images.pexels.com/photos/777001/pexels-photo-777001.jpeg?auto=compress&cs=tinysrgb&w=300'
-    },
-    {
-      id: '4',
-      title: 'Mechanical Keyboard',
-      category: 'Accessories',
-      price: 129.99,
-      image: 'https://images.pexels.com/photos/2115217/pexels-photo-2115217.jpeg?auto=compress&cs=tinysrgb&w=300'
-    },
-    {
-      id: '5',
-      title: 'Gaming Headset',
-      category: 'Audio',
-      price: 89.99,
-      image: 'https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=300'
-    },
-    {
-      id: '6',
-      title: 'Smartphone',
-      category: 'Electronics',
-      price: 699.99,
-      image: 'https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=300'
-    },
-    {
-      id: '7',
-      title: 'Tablet',
-      category: 'Electronics',
-      price: 449.99,
-      image: 'https://images.pexels.com/photos/1334597/pexels-photo-1334597.jpeg?auto=compress&cs=tinysrgb&w=300'
-    },
-    {
-      id: '8',
-      title: 'Smartwatch',
-      category: 'Wearables',
-      price: 299.99,
-      image: 'https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg?auto=compress&cs=tinysrgb&w=300'
-    },
-    {
-      id: '9',
-      title: 'Bluetooth Speaker',
-      category: 'Audio',
-      price: 149.99,
-      image: 'https://images.pexels.com/photos/1649771/pexels-photo-1649771.jpeg?auto=compress&cs=tinysrgb&w=300'
-    }
-  ]);
+  const [products, setProducts] = useState<Product[]>([]);
 
   const [isEditingProfile, setIsEditingProfile] = useState(false);
-  const [isUploadingPicture, setIsUploadingPicture] = useState(false);
+
+  // Fetch user's products on component mount
+  useEffect(() => {
+    if (Token) {
+      fetchUserProducts();
+    }
+  }, [Token]);
+
+  const fetchUserProducts = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/products/my/products', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${Token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch products');
+      }
+      
+      const productsData = await response.json();
+      setProducts(productsData.data.products || []);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      // Keep empty array if fetch fails
+      setProducts([]);
+    }
+  };
 
   // BACKEND INTEGRATION COMMENTS:
   // 
@@ -199,93 +156,32 @@ const Profile: React.FC = () => {
   //   }
   // };
 
-  // PROFILE PICTURE UPLOAD FUNCTIONALITY
-  const handleProfilePictureUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      alert('Please select an image file');
-      return;
-    }
-
-    // Validate file size (e.g., max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      alert('File size should be less than 5MB');
-      return;
-    }
-
-    try {
-      setIsUploadingPicture(true);
-
-      // Create a preview URL for immediate UI update
-      const previewUrl = URL.createObjectURL(file);
-      setProfile(prev => ({ ...prev, profilePicture: previewUrl }));
-
-      // BACKEND INTEGRATION:
-      // Upload the file to your server
-      // const formData = new FormData();
-      // formData.append('profilePicture', file);
-      // 
-      // const response = await fetch('/api/user/profile/picture', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Authorization': `Bearer ${userToken}`
-      //   },
-      //   body: formData
-      // });
-      // 
-      // if (!response.ok) {
-      //   throw new Error('Failed to upload profile picture');
-      // }
-      // 
-      // const result = await response.json();
-      // setProfile(prev => ({ ...prev, profilePicture: result.imageUrl }));
-      // 
-      // // Clean up the preview URL
-      // URL.revokeObjectURL(previewUrl);
-
-      // Simulate API call
-      setTimeout(() => {
-        console.log('Profile picture uploaded successfully');
-        setIsUploadingPicture(false);
-      }, 2000);
-
-    } catch (error) {
-      console.error('Error uploading profile picture:', error);
-      setIsUploadingPicture(false);
-      // Revert to original picture on error
-      // setProfile(prev => ({ ...prev, profilePicture: originalPictureUrl }));
-      alert('Failed to upload profile picture. Please try again.');
-    }
-  };
-
   const handleDeleteProduct = async (productId: string) => {
     try {
-      // Optimistic update - remove product immediately from UI
-      setProducts(prevProducts => prevProducts.filter(product => product.id !== productId));
+      // Show confirmation dialog
+      const confirmed = window.confirm('Are you sure you want to delete this product?');
+      if (!confirmed) return;
 
-      // BACKEND INTEGRATION:
       // Make API call to delete product
-      // const response = await fetch(`/api/products/${productId}`, {
-      //   method: 'DELETE',
-      //   headers: {
-      //     'Authorization': `Bearer ${userToken}`,
-      //     'Content-Type': 'application/json'
-      //   }
-      // });
-      // 
-      // if (!response.ok) {
-      //   // Revert optimistic update if API call fails
-      //   fetchUserProducts(); // Refresh the products list
-      //   throw new Error('Failed to delete product');
-      // }
+      const response = await fetch(`http://localhost:5000/api/products/${productId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${Token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete product');
+      }
+
+      // Optimistic update - remove product from UI after successful deletion
+      setProducts(prevProducts => prevProducts.filter(product => product.id !== productId));
       
-      console.log(`Product ${productId} deleted`);
+      console.log(`Product ${productId} deleted successfully`);
     } catch (error) {
       console.error('Error deleting product:', error);
-      // Show error message to user
+      alert('Failed to delete product. Please try again.');
     }
   };
 
@@ -293,15 +189,62 @@ const Profile: React.FC = () => {
     setIsEditingProfile(!isEditingProfile);
   };
 
-  const handleProfileSave = () => {
-    // BACKEND INTEGRATION:
-    // Call updateUserProfile(profile) here
-    setIsEditingProfile(false);
-    console.log('Profile updated:', profile);
+  const handleProfileSave = async () => {
+    try {
+      // Add more detailed logging
+      console.log('Starting profile update...');
+      console.log('Current user data:', user);
+      console.log('Edited data to save:', editingUser);
+      
+      // Use the simpler updateName function for just name fields
+      console.log('Updating just name fields with:', {
+        firstName: editingUser.firstName,
+        lastName: editingUser.lastName
+      });
+      
+      // Get token availability from the already destructured user object
+      console.log('Token available:', user !== null);
+      
+      const success = await updateName(
+        editingUser.firstName,
+        editingUser.lastName
+      );
+
+      console.log('Update name result:', success);
+
+      if (success) {
+        setIsEditingProfile(false);
+        console.log('Name update successful');
+      } else {
+        console.error('Failed to update name');
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
   };
 
-  const handleProfileChange = (field: keyof UserProfile, value: string) => {
-    setProfile(prev => ({
+  // Local state for editing user profile
+  const [editingUser, setEditingUser] = useState({
+    firstName: user?.firstName || '',
+    lastName: user?.lastName || '',
+    email: user?.email || '',
+    phone: user?.phone || ''
+  });
+
+  // Update local editing state when user data changes
+  useEffect(() => {
+    if (user) {
+      setEditingUser({
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        email: user.email || '',
+        phone: user.phone || ''
+      });
+    }
+  }, [user]);
+
+  const handleProfileChange = (field: string, value: string) => {
+    setEditingUser(prev => ({
       ...prev,
       [field]: value
     }));
@@ -312,26 +255,18 @@ const Profile: React.FC = () => {
       {/* Profile Section */}
       <div className="profile-section">
         <div className="profile-picture-container">
-          <div className="profile-picture" onClick={() => document.getElementById('profile-picture-input')?.click()}>
-            <img src={profile.profilePicture} alt="Profile" />
-            {isUploadingPicture && (
-              <div className="upload-overlay">
-                <div className="upload-spinner"></div>
+          {isEditingProfile ? (
+            <ProfileImageUpload />
+          ) : (
+            <>
+              <div className="profile-picture">
+                <img src={user?.profileImage || "https://via.placeholder.com/100"} alt="Profile" />
               </div>
-            )}
-          </div>
-          <input
-            id="profile-picture-input"
-            type="file"
-            accept="image/*"
-            onChange={handleProfilePictureUpload}
-            style={{ display: 'none' }}
-          />
-          <div className="profile-picture-text">
-            Profile Picture
-            <br />
-            <span className="edit-hint">(Click to change)</span>
-          </div>
+              <div className="profile-picture-text">
+                Profile Picture
+              </div>
+            </>
+          )}
         </div>
 
         <div className="profile-info">
@@ -339,21 +274,28 @@ const Profile: React.FC = () => {
             <div className="profile-edit-form">
               <input
                 type="text"
-                value={profile.name}
-                onChange={(e) => handleProfileChange('name', e.target.value)}
+                value={editingUser.firstName}
+                onChange={(e) => handleProfileChange('firstName', e.target.value)}
                 className="profile-input"
-                placeholder="Name"
+                placeholder="First Name"
+              />
+              <input
+                type="text"
+                value={editingUser.lastName}
+                onChange={(e) => handleProfileChange('lastName', e.target.value)}
+                className="profile-input"
+                placeholder="Last Name"
               />
               <input
                 type="tel"
-                value={profile.phone}
+                value={editingUser.phone}
                 onChange={(e) => handleProfileChange('phone', e.target.value)}
                 className="profile-input"
                 placeholder="Phone"
               />
               <input
                 type="email"
-                value={profile.email}
+                value={editingUser.email}
                 onChange={(e) => handleProfileChange('email', e.target.value)}
                 className="profile-input"
                 placeholder="Email"
@@ -366,16 +308,17 @@ const Profile: React.FC = () => {
           ) : (
             <div className="profile-display">
               <div className="profile-field">
-                <strong>Name:</strong> {profile.name}
+                <strong>Name:</strong> {user?.firstName} {user?.lastName}
               </div>
               <div className="profile-field">
-                <strong>Phone:</strong> {profile.phone}
+                <strong>Phone:</strong> {user?.phone || 'Not provided'}
               </div>
               <div className="profile-field">
-                <strong>Email:</strong> {profile.email}
+                <strong>Email:</strong> {user?.email}
               </div>
               <div className="edit-hint">(User should be able to edit these if they want)</div>
               <button onClick={handleProfileEdit} className="edit-profile-btn">Edit Profile</button>
+              <button onClick={logout} className="logout-btn">Logout</button>
             </div>
           )}
         </div>
@@ -383,25 +326,49 @@ const Profile: React.FC = () => {
 
       {/* Products Section */}
       <div className="products-section">
+        <h3>My Products</h3>
         <div className="products-grid">
-          {products.map((product) => (
-            <div key={product.id} className="product-card">
-              <div className="product-image">
-                <img src={product.image} alt={product.title} />
+          {products.length > 0 ? (
+            products.map((product) => (
+              <div 
+                key={product.id} 
+                className="product-card"
+                onClick={() => navigate(`/edit-product/${product.id}`)}
+                style={{ cursor: 'pointer' }}
+              >
+                <div className="product-image">
+                  <img 
+                    src={product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/200x150?text=No+Image'} 
+                    alt={product.title} 
+                  />
+                </div>
+                <div className="product-info">
+                  <div className="product-title">{product.title}</div>
+                  <div className="product-category">{product.category_name}</div>
+                  <div className="product-price">Rs. {typeof product.price === 'number' ? product.price.toFixed(2) : parseFloat(product.price).toFixed(2)}</div>
+                  <button 
+                    className="delete-btn"
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent card click when deleting
+                      handleDeleteProduct(product.id);
+                    }}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
-              <div className="product-info">
-                <div className="product-title">{product.title}</div>
-                <div className="product-category">{product.category}</div>
-                <div className="product-price">${product.price.toFixed(2)}</div>
-                <button 
-                  className="delete-btn"
-                  onClick={() => handleDeleteProduct(product.id)}
-                >
-                  delete
-                </button>
-              </div>
+            ))
+          ) : (
+            <div className="no-products">
+              <p>You haven't listed any products yet.</p>
+              <button 
+                onClick={() => navigate('/sell')}
+                className="add-product-btn"
+              >
+                Add Your First Product
+              </button>
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>

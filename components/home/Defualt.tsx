@@ -1,4 +1,6 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSearch } from '../../context/searchcontext/SearchContext';
 import './Default.css';
 
 interface Product {
@@ -7,145 +9,89 @@ interface Product {
   category: string;
   price: number;
   image: string;
+  images?: string[];
   description?: string;
+  condition?: string;
+  brand?: string;
+  model?: string;
+  seller_name?: string;
+  created_at?: string;
 }
 
 interface ProductGridProps {
-  products?: Product[];
-  selectedCategory?: string;
-  searchText?: string;
   onProductClick?: (product: Product) => void;
 }
 
-const Default: React.FC<ProductGridProps> = ({ 
-  products = [], 
-  selectedCategory = '', 
-  searchText = '', 
-  onProductClick 
-}) => {
-  const [imageErrors, setImageErrors] = useState<Set<number>>(new Set());
+const Default: React.FC<ProductGridProps> = ({ onProductClick }) => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({});
+  const navigate = useNavigate();
+  const { selectedCategory, searchText } = useSearch();
 
-  // Sample products data if none provided
-  const defaultProducts: Product[] = [
-    {
-      id: 1,
-      title: "Gaming Laptop Pro",
-      category: "Laptop",
-      price: 1299,
-      image: "https://cdn.thewirecutter.com/wp-content/media/2024/11/cheapgaminglaptops-2048px-7981.jpg",
-      description: "High-performance gaming laptop with RTX graphics and fast processor for ultimate gaming experience"
-    },
-    {
-      id: 2,
-      title: "RTX 4080 Graphics Card",
-      category: "Graphic Card",
-      price: 899,
-      image: "https://cdn.thewirecutter.com/wp-content/media/2024/11/cheapgaminglaptops-2048px-7981.jpg",
-      description: "Powerful graphics card for 4K gaming and professional rendering workloads"
-    },
-    {
-      id: 3,
-      title: "DDR5 32GB RAM Kit",
-      category: "Ram",
-      price: 299,
-      image: "https://cdn.thewirecutter.com/wp-content/media/2024/11/cheapgaminglaptops-2048px-7981.jpg",
-      description: "High-speed DDR5 memory kit for enhanced system performance and multitasking"
-    },
-    {
-      id: 4,
-      title: "Intel i9 Processor",
-      category: "Cpu",
-      price: 599,
-      image: "https://via.placeholder.com/150x120/f0f0f0/666666?text=CPU",
-      description: "Latest generation processor with excellent performance for gaming and productivity"
-    },
-    {
-      id: 5,
-      title: "4K Gaming Monitor",
-      category: "Monitor",
-      price: 449,
-      image: "https://via.placeholder.com/150x120/f0f0f0/666666?text=Monitor",
-      description: "Ultra-wide 4K monitor with high refresh rate perfect for gaming and content creation"
-    },
-    {
-      id: 6,
-      title: "Z790 Motherboard",
-      category: "Mother Board",
-      price: 249,
-      image: "https://via.placeholder.com/150x120/f0f0f0/666666?text=Motherboard",
-      description: "Feature-rich motherboard with latest chipset supporting DDR5 and PCIe 5.0"
-    },
-    {
-      id: 7,
-      title: "Business Laptop",
-      category: "Laptop",
-      price: 899,
-      image: "https://via.placeholder.com/150x120/f0f0f0/666666?text=Business+Laptop",
-      description: "Professional laptop designed for business use with long battery life and security features"
-    },
-    {
-      id: 8,
-      title: "Budget Graphics Card",
-      category: "Graphic Card",
-      price: 299,
-      image: "https://via.placeholder.com/150x120/f0f0f0/666666?text=Budget+GPU",
-      description: "Affordable graphics card perfect for 1080p gaming and basic content creation"
-    },
-    {
-      id: 9,
-      title: "Ultrabook Laptop",
-      category: "Laptop",
-      price: 1099,
-      image: "https://via.placeholder.com/150x120/f0f0f0/666666?text=Ultrabook",
-      description: "Thin and lightweight laptop with premium build quality and excellent portability"
-    },
-    {
-      id: 10,
-      title: "MacBook Laptop",
-      category: "Laptop",
-      price: 1599,
-      image: "https://via.placeholder.com/150x120/f0f0f0/666666?text=MacBook",
-      description: "Premium build quality and excellent portability with Apple's ecosystem integration"
-    },
-    {
-      id: 11,
-      title: "Gaming Monitor 144Hz",
-      category: "Monitor",
-      price: 349,
-      image: "https://via.placeholder.com/150x120/f0f0f0/666666?text=Gaming+Monitor",
-      description: "High refresh rate monitor perfect for competitive gaming and smooth visuals"
-    },
-    {
-      id: 12,
-      title: "Mini-ITX Motherboard",
-      category: "Mother Board",
-      price: 199,
-      image: "https://via.placeholder.com/150x120/f0f0f0/666666?text=Mini+ITX",
-      description: "Compact motherboard perfect for small form factor builds without compromising features"
-    }
-  ];
+  // Fetch products from backend
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-  const productData = products.length > 0 ? products : defaultProducts;
+        // Build query parameters
+        const queryParams = new URLSearchParams();
+        if (selectedCategory) {
+          queryParams.append('category', selectedCategory);
+        }
+        if (searchText) {
+          queryParams.append('search', searchText);
+        }
+        queryParams.append('limit', '50'); // Get more products for homepage
 
-  // Memoized filtered products for better performance
-  const filteredProducts = useMemo(() => {
-    return productData.filter(product => {
-      const matchesCategory = !selectedCategory || 
-        product.category.toLowerCase() === selectedCategory.toLowerCase();
-      
-      const matchesSearch = !searchText || 
-        product.title.toLowerCase().includes(searchText.toLowerCase()) ||
-        product.description?.toLowerCase().includes(searchText.toLowerCase());
-      
-      return matchesCategory && matchesSearch;
-    });
-  }, [productData, selectedCategory, searchText]);
+        const response = await fetch(`/api/products?${queryParams.toString()}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to fetch products');
+        }
+
+        // Transform the backend data to match our interface
+        const transformedProducts: Product[] = data.data.products.map((product: any) => ({
+          id: product.id,
+          title: product.title,
+          category: product.category_name,
+          price: product.price,
+          image: product.images && product.images.length > 0 
+            ? `http://localhost:5000${product.images[0]}` 
+            : "https://via.placeholder.com/150x120/f0f0f0/666666?text=No+Image",
+          images: product.images?.map((img: string) => `http://localhost:5000${img}`) || [],
+          description: product.description,
+          condition: product.condition,
+          brand: product.brand,
+          model: product.model,
+          seller_name: product.seller_name,
+          created_at: product.created_at
+        }));
+
+        setProducts(transformedProducts);
+        console.log('Transformed products:', transformedProducts);
+
+      } catch (error: any) {
+        console.error('Error fetching products:', error);
+        setError(error.message || 'Failed to load products');
+        setProducts([]); // Fallback to empty array
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [selectedCategory, searchText]); // Re-fetch when category or search changes
 
   // Optimized image error handler
   const handleImageError = useCallback((productId: number, event: React.SyntheticEvent<HTMLImageElement>) => {
     const target = event.target as HTMLImageElement;
-    if (!imageErrors.has(productId)) {
-      setImageErrors(prev => new Set(prev).add(productId));
+    if (!imageErrors[productId]) {
+      setImageErrors(prev => ({ ...prev, [productId]: true }));
       target.src = "https://via.placeholder.com/150x120/f0f0f0/666666?text=No+Image";
     }
   }, [imageErrors]);
@@ -155,15 +101,16 @@ const Default: React.FC<ProductGridProps> = ({
     if (onProductClick) {
       onProductClick(product);
     } else {
-      console.log('Product clicked:', product);
+      // Navigate to product detail page with product ID
+      navigate(`/viewproduct?id=${product.id}`);
     }
-  }, [onProductClick]);
+  }, [onProductClick, navigate]);
 
   // Format price with proper currency
   const formatPrice = useCallback((price: number) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-NP', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'NPR',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
@@ -179,9 +126,33 @@ const Default: React.FC<ProductGridProps> = ({
 
   return (
     <div className="product-grid-container">
+      {/* Loading State */}
+      {loading && (
+        <div className="loading-state" role="status" aria-live="polite">
+          <p>Loading products...</p>
+        </div>
+      )}
 
-      <div className="products-grid" role="grid" aria-label="Product grid">
-        {filteredProducts.map((product, index) => (
+      {/* Error State */}
+      {error && !loading && (
+        <div className="error-state" role="alert">
+          <p>Error: {error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="retry-button"
+          >
+            Retry
+          </button>
+        </div>
+      )}
+
+      {/* Products Grid */}
+      {!loading && !error && (
+        <>
+          <div className="products-grid" role="grid" aria-label="Product grid">
+        {products.map((product: Product, index: number) => {
+          console.log('Rendering product:', product.title, 'Description:', product.description);
+          return (
           <div 
             key={product.id} 
             className="product-card"
@@ -213,17 +184,16 @@ const Default: React.FC<ProductGridProps> = ({
                 <p className="hover-price">{formatPrice(product.price)}</p>
                 <div className="hover-description">
                   <span className="description-label">Description:</span>
-                  <p className="description-text">
-                    {product.description || "No description available"}
-                  </p>
+                  <p className="description-text">{product.description}</p>
                 </div>
               </div>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
 
-      {filteredProducts.length === 0 && (
+      {products.length === 0 && (
         <div className="no-products-message" role="status" aria-live="polite">
           <p>No products found</p>
           {selectedCategory && (
@@ -237,11 +207,13 @@ const Default: React.FC<ProductGridProps> = ({
 
       <div className="results-info" role="status" aria-live="polite">
         <p>
-          Showing {filteredProducts.length} of {productData.length} products
+          Showing {products.length} products
           {selectedCategory && ` in category: ${selectedCategory}`}
           {searchText && ` matching: "${searchText}"`}
         </p>
       </div>
+        </>
+      )}
     </div>
   );
 };

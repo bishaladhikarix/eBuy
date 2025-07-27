@@ -1,222 +1,66 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useCart } from '../../context/cart/CartContext';
 import './Cart.css';
 
-interface CartItem {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  price: number;
-  
-}
-
 const Cart: React.FC = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [loading, setLoading] = useState(false);
+  // Use cart context
+  const { cartItems, removeFromCart, getTotalPrice, clearCart } = useCart();
 
-  // Dummy data - Replace with actual API call
-  const dummyCartItems: CartItem[] = [
-    {
-      id: '1',
-      title: 'Gaming Laptop RTX 4080',
-      description: 'High-performance gaming laptop with RTX 4080 graphics card',
-      image: 'https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=300',
-      price: 1299.99
-      
-    },
-    {
-      id: '2',
-      title: 'Wireless Gaming Mouse',
-      description: 'Ergonomic wireless gaming mouse with RGB lighting',
-      image: 'https://images.pexels.com/photos/2115256/pexels-photo-2115256.jpeg?auto=compress&cs=tinysrgb&w=300',
-      price: 79.99
-     
-    },
-    {
-      id: '3',
-      title: '4K Gaming Monitor',
-      description: '27-inch 4K gaming monitor with 144Hz refresh rate',
-      image: 'https://images.pexels.com/photos/777001/pexels-photo-777001.jpeg?auto=compress&cs=tinysrgb&w=300',
-      price: 399.99
-      
-    },
-    {
-      id: '4',
-      title: 'Mechanical Keyboard',
-      description: 'RGB mechanical keyboard with blue switches',
-      image: 'https://images.pexels.com/photos/2115217/pexels-photo-2115217.jpeg?auto=compress&cs=tinysrgb&w=300',
-      price: 129.99
-      
-    },
-    {
-      id: '5',
-      title: 'Gaming Headset',
-      description: 'Surround sound gaming headset with noise cancellation',
-      image: 'https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=300',
-      price: 89.99
-      
-    }
-  ];
-
-  // BACKEND INTEGRATION COMMENTS:
-  // 
-  // 1. FETCHING CART DATA FROM BACKEND:
-  // Replace the useEffect below with actual API call to fetch user's cart items
-  // 
-  // Example API integration:
-  // const fetchCartItems = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const response = await fetch('/api/cart', {
-  //       method: 'GET',
-  //       headers: {
-  //         'Authorization': `Bearer ${userToken}`,
-  //         'Content-Type': 'application/json'
-  //       }
-  //     });
-  //     
-  //     if (!response.ok) {
-  //       throw new Error('Failed to fetch cart items');
-  //     }
-  //     
-  //     const data = await response.json();
-  //     setCartItems(data.items || []);
-  //   } catch (error) {
-  //     console.error('Error fetching cart:', error);
-  //     // Handle error - show toast notification or error message
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-  //
-  // 2. REAL-TIME CART UPDATES:
-  // Consider using WebSocket or Server-Sent Events for real-time cart updates
-  // if multiple devices/tabs can modify the same cart
-  //
-  // 3. CART PERSISTENCE:
-  // For logged-in users: Store cart in database linked to user ID
-  // For guest users: Store cart in localStorage or session storage
-  // 
-  // 4. CART SYNCHRONIZATION:
-  // When user logs in, merge localStorage cart with server cart
-  // Handle conflicts (same item in both carts) appropriately
-
-  useEffect(() => {
-    // Simulate API call with dummy data
-    setLoading(true);
-    setTimeout(() => {
-      setCartItems(dummyCartItems);
-      setLoading(false);
-    }, 1000);
-
-    // REPLACE WITH ACTUAL API CALL:
-    // fetchCartItems();
-  }, []);
-
-  // DELETE ITEM FROM CART
-  const handleDeleteItem = async (itemId: string) => {
-    try {
-      // Optimistic update - remove item immediately from UI
-      setCartItems(prevItems => prevItems.filter(item => item.id !== itemId));
-
-      // BACKEND INTEGRATION:
-      // Make API call to remove item from cart
-      // const response = await fetch(`/api/cart/items/${itemId}`, {
-      //   method: 'DELETE',
-      //   headers: {
-      //     'Authorization': `Bearer ${userToken}`,
-      //     'Content-Type': 'application/json'
-      //   }
-      // });
-      // 
-      // if (!response.ok) {
-      //   // Revert optimistic update if API call fails
-      //   setCartItems(prevItems => [...prevItems, deletedItem]);
-      //   throw new Error('Failed to remove item from cart');
-      // }
-      
-      console.log(`Item ${itemId} deleted from cart`);
-    } catch (error) {
-      console.error('Error deleting item:', error);
-      // Show error message to user
-      // Consider reverting the optimistic update
+  const handleDeleteItem = (itemId: number) => {
+    if (window.confirm('Are you sure you want to remove this item from your cart?')) {
+      removeFromCart(itemId);
     }
   };
 
-  // CHECKOUT PROCESS
+  const handleClearCart = () => {
+    if (window.confirm('Are you sure you want to clear your entire cart?')) {
+      clearCart();
+    }
+  };
+
   const handleCheckout = async () => {
+    if (cartItems.length === 0) {
+      alert('Your cart is empty');
+      return;
+    }
+
     try {
-      setLoading(true);
+      // TODO: Implement actual checkout logic
+      const orderData = {
+        items: cartItems,
+        total: getTotalPrice(),
+        timestamp: new Date().toISOString(),
+      };
 
-      // BACKEND INTEGRATION FOR CHECKOUT:
-      // 1. Validate cart items (check availability, prices)
-      // 2. Calculate total with taxes, shipping, discounts
-      // 3. Create order in database
-      // 4. Process payment
-      // 5. Clear cart after successful payment
-      // 
-      // const checkoutData = {
-      //   items: cartItems,
-      //   shippingAddress: userShippingAddress,
-      //   paymentMethod: selectedPaymentMethod,
-      //   couponCode: appliedCoupon
-      // };
-      // 
-      // const response = await fetch('/api/checkout', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Authorization': `Bearer ${userToken}`,
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify(checkoutData)
-      // });
-      // 
-      // const result = await response.json();
-      // 
-      // if (response.ok) {
-      //   // Redirect to payment gateway or success page
-      //   window.location.href = result.paymentUrl || '/order-success';
-      // } else {
-      //   throw new Error(result.message || 'Checkout failed');
-      // }
-
-      // Simulate checkout process
-      setTimeout(() => {
-        alert('Checkout successful! (This is a demo)');
-        setCartItems([]); // Clear cart after successful checkout
-        setLoading(false);
-      }, 2000);
-
+      console.log('Order placed:', orderData);
+      alert('Order placed successfully! Check your email for confirmation.');
+      clearCart();
+      
     } catch (error) {
       console.error('Checkout error:', error);
-      setLoading(false);
-      // Show error message to user
+      alert('Error during checkout. Please try again.');
     }
   };
-
-  // Calculate total price
-  const totalPrice = cartItems.reduce((total, item) => total + (item.price), 0);
-
-  if (loading && cartItems.length === 0) {
-    return (
-      <div className="cart-container">
-        <div className="cart-header">
-          <h2>Cart</h2>
-        </div>
-        <div className="cart-loading">Loading cart items...</div>
-      </div>
-    );
-  }
 
   return (
     <div className="cart-container">
       <div className="cart-header">
-        <h2>Cart</h2>
+        <h2>Shopping Cart</h2>
+        {cartItems.length > 0 && (
+          <button 
+            className="clear-cart-btn" 
+            onClick={handleClearCart}
+            aria-label="Clear entire cart"
+          >
+            Clear Cart
+          </button>
+        )}
       </div>
 
       {cartItems.length === 0 ? (
         <div className="cart-empty">
-          <p>Your cart is empty</p>
+          <h3>Your cart is empty</h3>
+          <p>Add some products to your cart to see them here!</p>
         </div>
       ) : (
         <>
@@ -224,37 +68,61 @@ const Cart: React.FC = () => {
             {cartItems.map((item) => (
               <div key={item.id} className="cart-item">
                 <div className="item-image">
-                  <img src={item.image} alt={item.title} />
+                  <img 
+                    src={item.image || '/placeholder-image.jpg'} 
+                    alt={item.title}
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = '/placeholder-image.jpg';
+                    }}
+                  />
                 </div>
+                
                 <div className="item-details">
                   <h3 className="item-title">{item.title}</h3>
                   <p className="item-description">{item.description}</p>
-                  <div className="item-meta">
-                    <span className="item-price">${item.price.toFixed(2)}</span>
+                  <div className="item-price">
+                    <span className="price">Rs. {parseFloat(item.price).toFixed(2)}</span>
                   </div>
                 </div>
-                <button 
-                  className="delete-button"
-                  onClick={() => handleDeleteItem(item.id)}
-                  disabled={loading}
-                >
-                  Delete
-                </button>
+
+                <div className="item-controls">
+                  <button
+                    className="remove-item-btn"
+                    onClick={() => handleDeleteItem(item.id)}
+                    aria-label={`Remove ${item.title} from cart`}
+                  >
+                    Remove
+                  </button>
+                </div>
               </div>
             ))}
           </div>
 
-          <div className="cart-footer">
-            <div className="cart-total">
-              <strong>Total: ${totalPrice.toFixed(2)}</strong>
+          <div className="cart-summary">
+            <div className="summary-row">
+              <span className="summary-label">Items:</span>
+              <span className="summary-value">
+                {cartItems.length} item(s)
+              </span>
             </div>
-            <button 
-              className="checkout-button"
-              onClick={handleCheckout}
-              disabled={loading || cartItems.length === 0}
-            >
-              {loading ? 'Processing...' : 'Checkout'}
-            </button>
+            
+            <div className="summary-row total-row">
+              <span className="summary-label">Total:</span>
+              <span className="summary-value total-price">
+                Rs. {getTotalPrice().toFixed(2)}
+              </span>
+            </div>
+
+            <div className="cart-actions">
+              <button 
+                className="checkout-btn"
+                onClick={handleCheckout}
+                disabled={cartItems.length === 0}
+              >
+                Proceed to Checkout
+              </button>
+            </div>
           </div>
         </>
       )}

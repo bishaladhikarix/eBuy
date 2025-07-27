@@ -48,60 +48,36 @@
 import './UserActions.css';
 import {MessageCircleMore,ShoppingCart,Heart,X} from 'lucide-react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useFavorites } from '../../../context/favorites/FavoritesContext';
+import { useCart } from '../../../context/cart/CartContext';
 import UserIcon from '../../account/UserIcon';
 
 const UserActions = () => {
-  const [cartCount, setCartCount] = useState(3);
-  const [message, setMessage] = useState(0);
+  const navigate = useNavigate();
+  const [message] = useState(0);
   const [showFavorites, setShowFavorites] = useState(false);
 
-  // Sample favorite items data - replace with your actual data
-  const [favoriteItems, setFavoriteItems] = useState([
-    {
-      id: 1,
-      image: '/api/placeholder/80/60',
-      title: 'Gaming Laptop RTX 4080',
-      price: '$1,299.99'
-    },
-    {
-      id: 2,
-      image: '/api/placeholder/80/60',
-      title: 'Wireless Gaming Mouse',
-      price: '$79.99'
-    },
-    {
-      id: 3,
-      image: '/api/placeholder/80/60',
-      title: '4K Gaming Monitor',
-      price: '$399.99'
-    },
-    {
-      id: 4,
-      image: '/api/placeholder/80/60',
-      title: 'Mechanical Keyboard',
-      price: '$149.99'
-    },
-    {
-      id: 5,
-      image: '/api/placeholder/80/60',
-      title: 'Graphics Card RTX 4090',
-      price: '$1,599.99'
-    }
-  ]);
+  // Use contexts for favorites and cart
+  const { favoriteItems, removeFromFavorites } = useFavorites();
+  const { getTotalItems } = useCart();
+
+  const cartCount = getTotalItems();
 
   const toggleFavorites = () => {
     setShowFavorites(!showFavorites);
   };
 
-  const removeFavorite = (itemId:any) => {
-    setFavoriteItems(favoriteItems.filter(item => item.id !== itemId));
+  const removeFavorite = (itemId: number) => {
+    removeFromFavorites(itemId);
   };
 
-  const handleItemclick = (id:any) =>{
-    console.log(id);
-    
-  }
+  const handleItemclick = (id: number) => {
+    // Navigate to product detail page
+    navigate(`/viewproduct?id=${id}`);
+    // Close the favorites popup
+    setShowFavorites(false);
+  };
 
   return (
     <div className='action-container'>
@@ -138,7 +114,7 @@ const UserActions = () => {
                     </div>
                     <div className="favorite-details">
                       <h4 className="favorite-title">{item.title}</h4>
-                      <p className="favorite-price">{item.price}</p>
+                      <p className="favorite-price">Rs. {parseFloat(item.price).toFixed(2)}</p>
                     </div>
                     <button 
                       className="remove-favorite-btn"
