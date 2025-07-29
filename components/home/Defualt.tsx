@@ -16,11 +16,29 @@ interface Product {
   model?: string;
   seller_name?: string;
   created_at?: string;
+  searchScore?: number; // For fuzzy search ranking
 }
 
 interface ProductGridProps {
   onProductClick?: (product: Product) => void;
 }
+
+// Debounce hook for search optimization
+const useDebounce = (value: string, delay: number) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+};
 
 const Default: React.FC<ProductGridProps> = ({ onProductClick }) => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -29,6 +47,9 @@ const Default: React.FC<ProductGridProps> = ({ onProductClick }) => {
   const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({});
   const navigate = useNavigate();
   const { selectedCategory, searchText } = useSearch();
+  
+  // Debounce search text to avoid too many API calls
+  const debouncedSearchText = useDebounce(searchText, 300);
 
   // Fetch products from backend
   useEffect(() => {
@@ -42,8 +63,9 @@ const Default: React.FC<ProductGridProps> = ({ onProductClick }) => {
         if (selectedCategory) {
           queryParams.append('category', selectedCategory);
         }
-        if (searchText) {
-          queryParams.append('search', searchText);
+        if (debouncedSearchText && debouncedSearchText.trim()) {
+          queryParams.append('brand_search', debouncedSearchText.trim());
+          queryParams.append('fuzzy', 'true'); // Enable fuzzy search on backend for brand
         }
         queryParams.append('limit', '50'); // Get more products for homepage
 
@@ -69,11 +91,12 @@ const Default: React.FC<ProductGridProps> = ({ onProductClick }) => {
           brand: product.brand,
           model: product.model,
           seller_name: product.seller_name,
-          created_at: product.created_at
+          created_at: product.created_at,
+          searchScore: product.searchScore || 0 // For search result ranking
         }));
 
         setProducts(transformedProducts);
-        console.log('Transformed products:', transformedProducts);
+        console.log('Fuzzy brand search results:', transformedProducts);
 
       } catch (error: any) {
         console.error('Error fetching products:', error);
@@ -85,7 +108,7 @@ const Default: React.FC<ProductGridProps> = ({ onProductClick }) => {
     };
 
     fetchProducts();
-  }, [selectedCategory, searchText]); // Re-fetch when category or search changes
+  }, [selectedCategory, debouncedSearchText]); // Re-fetch when category or debounced search changes
 
   // Optimized image error handler
   const handleImageError = useCallback((productId: number, event: React.SyntheticEvent<HTMLImageElement>) => {
@@ -151,7 +174,7 @@ const Default: React.FC<ProductGridProps> = ({ onProductClick }) => {
         <>
           <div className="products-grid" role="grid" aria-label="Product grid">
         {products.map((product: Product, index: number) => {
-          console.log('Rendering product:', product.title, 'Description:', product.description);
+          console.log('Rendering product:', product.title, 'Brand:', product.brand);
           return (
           <div 
             key={product.id} 
@@ -174,6 +197,11 @@ const Default: React.FC<ProductGridProps> = ({ onProductClick }) => {
             <div className="product-info">
               <h3 className="product-title">{product.title}</h3>
               <p className="product-category">{product.category}</p>
+              {product.brand && (
+                <p className="product-brand" style={{ color: '#666', fontSize: '0.9em' }}>
+                  Brand: {product.brand}
+                </p>
+              )}
               <p className="product-price">{formatPrice(product.price)}</p>
             </div>
 
@@ -193,8 +221,13 @@ const Default: React.FC<ProductGridProps> = ({ onProductClick }) => {
           {selectedCategory && (
             <p>No products in category: "{selectedCategory}"</p>
           )}
-          {searchText && (
-            <p>No products matching search: "{searchText}"</p>
+          {debouncedSearchText && (
+            <p>No products matching brand: "{debouncedSearchText}"</p>
+          )}
+          {debouncedSearchText && (
+            <p style={{ fontSize: '0.9em', color: '#666', marginTop: '8px' }}>
+              💡 Try different brand names or check spelling
+            </p>
           )}
         </div>
       )}
@@ -203,7 +236,7 @@ const Default: React.FC<ProductGridProps> = ({ onProductClick }) => {
         <p>
           Showing {products.length} products
           {selectedCategory && ` in category: ${selectedCategory}`}
-          {searchText && ` matching: "${searchText}"`}
+          {debouncedSearchText && ` with brand matching: "${debouncedSearchText}"`}
         </p>
       </div>
         </>

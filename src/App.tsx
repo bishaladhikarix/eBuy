@@ -15,7 +15,7 @@ function App() {
       </main>
       <footer className='footer'>
         <div className="foot-container">
-          @COpyRight 2025 All the fucking rights reserved.
+          @COpyRight 2025 Allrights reserved.
         </div>
       </footer>
       

@@ -32,7 +32,7 @@ const EditProduct: React.FC = () => {
   
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [title, setTitle] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
+  const [description, setDescription] = useState<string >('');
   const [price, setPrice] = useState<string>('');
   const [condition, setCondition] = useState<string>('New');
   const [brand, setBrand] = useState<string>('');

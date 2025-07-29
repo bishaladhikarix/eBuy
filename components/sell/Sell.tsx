@@ -109,7 +109,10 @@ const Sell: React.FC = () => {
   const handleEnhance = async() => {
     console.log('Enhancing description...');
     const enhancedVal = await GemApi(description);
-    setDescription(enhancedVal);
+    if(enhancedVal){
+      setDescription(enhancedVal);
+    }
+    
   }
 
   const handleSubmit = useCallback(async () => {
@@ -356,7 +359,7 @@ const Sell: React.FC = () => {
             onClick={handleEnhance}
             type="button"
           >
-            Enhance with AI
+            Recommand AI
           </button>
         </div>
 
