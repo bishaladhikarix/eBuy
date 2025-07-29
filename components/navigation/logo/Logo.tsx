@@ -4,10 +4,10 @@ import { useSearch } from '../../../context/searchcontext/SearchContext';
 
 const Logo = () => {
 
-  const { setSearchText } = useSearch();
+  const { clearFilters } = useSearch();
   // Clear search text when logo is clicked
   const handleLogoClick = () => {
-    setSearchText('');
+    clearFilters();
   };
   return (
     <div className='logo-styles'>

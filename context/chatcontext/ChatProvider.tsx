@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback } from 'react';
+import React, { useState, useContext, useCallback, useMemo } from 'react';
 import ChatContext from './ChatContext';
 import type { ChatContextType } from './ChatContext';
 import type { 
@@ -26,7 +26,8 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
 
-  const currentUser = getUserData();
+  // Memoize currentUser to prevent unnecessary re-renders
+  const currentUser = useMemo(() => getUserData(), []);
 
   const createOrGetRoom = useCallback(async (participantId: number): Promise<ChatRoom | null> => {
     try {

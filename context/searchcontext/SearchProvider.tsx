@@ -1,5 +1,5 @@
-import React, { useState, ReactNode } from 'react';
-import { SearchContext, SearchContextType } from './SearchContext';
+import React, { useState, type ReactNode } from 'react';
+import { SearchContext, type SearchContextType } from './SearchContext';
 
 interface SearchProviderProps {
   children: ReactNode;

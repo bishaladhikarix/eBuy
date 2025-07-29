@@ -75,7 +75,7 @@ const ChatUI: React.FC = () => {
     if (user) {
       loadUserRooms();
     }
-  }, [user]); // Removed loadUserRooms from dependencies since it's now memoized
+  }, [user, loadUserRooms]);
 
   // Handle navigation from user profile
   useEffect(() => {

@@ -7,8 +7,11 @@ import SearchBar from '../search/SearchBar';
 import UserActions from './action/UserActions';
 import CategoriesDropdown from './dropdown/CategoriesDropdown';
 
+
+
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
